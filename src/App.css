@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
+
+:root {
+  --primary-font: "Rubik", sans-serif;
+  --dgray: hsl(0, 0%, 59%);
+  --vdgray: hsl(0, 0%, 17%);
+}
+
+body {
+  font-family: var(--primary-font);
+}
+.wrapper {
+  background: url("./images/pattern-bg.png") no-repeat center center/cover;
+  height: 35vh;
+}
