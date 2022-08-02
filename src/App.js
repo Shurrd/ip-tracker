@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "./App.css";
 import LocationIcon from "./images/icon-location.svg";
 import L from "leaflet";
+import ChangeMapView from "./utils/ChangeMapView";
 
 const App = () => {
   const styleTitle = "text-gray-400 font-semibold text-sm";
@@ -11,7 +12,11 @@ const App = () => {
     "flex flex-col xl:items-start items-center gap-4 xl:border-r xl:border-gray-200 pr-8";
 
   const [data, setData] = useState({});
+  const [userData, setUserData] = useState({});
   const [ipAddress, setIpAddress] = useState("");
+
+  const userIp =
+    "https://geo.ipify.org/api/v1?apiKey=at_Ix3Hrk6iQnlTw4uS0NWbu0wq7e0aC";
 
   const url = `https://geo.ipify.org/api/v2/country,city?apiKey=at_Ix3Hrk6iQnlTw4uS0NWbu0wq7e0aC&ipAddress=${ipAddress}`;
 
@@ -23,6 +28,16 @@ const App = () => {
     iconSize: [38, 55],
   });
 
+  useEffect(() => {
+    const pageLoad = async () => {
+      const response = await fetch(userIp);
+      const data = await response.json();
+      setUserData(data);
+    };
+    console.log(userData);
+    pageLoad();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -32,14 +47,21 @@ const App = () => {
         const response = await fetch(url);
         const data = await response.json();
         setData(data);
+        setIpAddress("");
         if (data.code === 422) {
           alert(data.messages);
         }
+        console.log(data);
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  const lat = data?.location?.lat;
+  const lng = data?.location?.lng;
+
+  const position = [lat ? lat : "", lng ? lng : ""];
 
   return (
     <section className="wrapper w-full flex items-center flex-col">
@@ -86,7 +108,7 @@ const App = () => {
           </div>
           <div className={divContainer}>
             <p className={styleTitle}>TIMEZONE</p>
-            <p className={styleName}>{data?.location?.timezone}</p>
+            <p className={styleName}>UTC {data?.location?.timezone}</p>
           </div>
           <div className="flex flex-col xl:items-start items-center gap-4 pr-8">
             <p className={styleTitle}>ISP</p>
@@ -96,21 +118,17 @@ const App = () => {
       </section>
       <section className="">
         <div className="">
-          <MapContainer
-            center={[51, -0.09]}
-            zoom={13}
-            scrollWheelZoom={false}
-            dragging={false}
-          >
+          <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={[51, -0.09]} icon={icon}>
+            <Marker position={position} icon={icon}>
               <Popup>
                 A pretty CSS3 popup. <br /> Easily customizable.
               </Popup>
             </Marker>
+            <ChangeMapView coords={position} />
           </MapContainer>
         </div>
       </section>

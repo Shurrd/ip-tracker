@@ -22,9 +22,3 @@ body {
   width: 100vw;
   z-index: 1;
 }
-.leaflet-container:hover {
-  cursor: grab;
-}
-.leaflet-container:active {
-  cursor: grabbing;
-}
