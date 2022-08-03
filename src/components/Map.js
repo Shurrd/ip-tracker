@@ -29,7 +29,8 @@ const Map = () => {
           />
           <Marker position={position} icon={icon}>
             <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
+              {data?.location?.city}, {data?.location?.region} <br />
+              {data?.isp}
             </Popup>
           </Marker>
           <ChangeMapView coords={position} />

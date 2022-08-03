@@ -1,8 +1,9 @@
 import React from "react";
 import { useGlobalContext } from "../utils/Context";
+import Loader from "../components/Loader";
 
 const Search = () => {
-  const { handleSubmit, ipAddress, setIpAddress } = useGlobalContext();
+  const { handleSubmit, ipAddress, setIpAddress, loading } = useGlobalContext();
   return (
     <div className="flex">
       <div className="mt-5 xl:w-[30vw] w-[70vw] h-12">
@@ -16,14 +17,18 @@ const Search = () => {
           />
         </form>
       </div>
-      <div
-        className="bg-black mt-5 flex justify-center items-center w-16 rounded-l-none rounded-lg cursor-pointer"
-        onClick={handleSubmit}
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="14">
-          <path fill="none" stroke="#FFF" strokeWidth="3" d="M2 1l6 6-6 6" />
-        </svg>
-      </div>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div
+          className="bg-black mt-5 flex justify-center items-center w-16 rounded-l-none rounded-lg cursor-pointer"
+          onClick={handleSubmit}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="11" height="14">
+            <path fill="none" stroke="#FFF" strokeWidth="3" d="M2 1l6 6-6 6" />
+          </svg>
+        </div>
+      )}
     </div>
   );
 };

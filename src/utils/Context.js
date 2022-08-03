@@ -5,6 +5,7 @@ const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
   const [data, setData] = useState({});
   const [ipAddress, setIpAddress] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const url = `https://geo.ipify.org/api/v2/country,city?apiKey=at_TsOBcg6OXcaYOe23drEeKcotyIaL6&ipAddress=${ipAddress}`;
   const userUrl =
@@ -12,10 +13,12 @@ const AppProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await fetch(userUrl);
         const data = await response.json();
         setData(data);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -25,6 +28,7 @@ const AppProvider = ({ children }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       if (ipAddress === "") {
         alert("Please Input an IP Address.");
@@ -34,9 +38,22 @@ const AppProvider = ({ children }) => {
         setData(data);
         setIpAddress("");
         if (data.code === 422) {
-          alert(data.messages);
+          const fetchData = async () => {
+            setLoading(true);
+            alert(data.messages);
+            try {
+              const response = await fetch(userUrl);
+              const data = await response.json();
+              setData(data);
+              setLoading(false);
+            } catch (error) {
+              console.log(error);
+            }
+          };
+          fetchData();
         }
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -44,7 +61,7 @@ const AppProvider = ({ children }) => {
 
   return (
     <AppContext.Provider
-      value={{ handleSubmit, data, ipAddress, setIpAddress, setData }}
+      value={{ handleSubmit, data, ipAddress, setIpAddress, setData, loading }}
     >
       {children}
     </AppContext.Provider>
