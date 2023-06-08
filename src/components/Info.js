@@ -4,12 +4,12 @@ import { useGlobalContext } from "../utils/Context";
 const Info = () => {
   const { data } = useGlobalContext();
 
-  const styleTitle = "text-gray-400 font-semibold text-sm";
-  const styleName = "font-bold text-xl flex text-center xl:text-start";
+  const styleTitle = "text-gray-400 font-semibold text-sm text-center";
+  const styleName = "font-bold text-xl flex xl:text-start text-center";
   const divContainer =
-    "flex flex-col xl:items-start items-center gap-4 xl:border-r xl:border-gray-200 pr-5";
+    "flex flex-col xl:items-start gap-4 xl:border-r xl:pr-5 xl:border-gray-200";
   const parent =
-    "bg-white xl:h-52 border flex xl:flex-row flex-col xl:gap-16 gap-4 py-7 xl:justify-start items-center pl-14 mt-[2rem] mb-[-4rem] rounded-3xl z-50 w-[80vw]";
+    "bg-white xl:h-52 flex xl:flex-row flex-col xl:gap-16 gap-4 py-7 xl:justify-start items-center xl:pl-14 mt-[2rem] mb-[-4rem] rounded-3xl z-50 w-[80vw]";
 
   return (
     <div className={parent}>
@@ -27,7 +27,7 @@ const Info = () => {
         <p className={styleTitle}>TIMEZONE</p>
         <p className={styleName}>UTC{data?.location?.timezone}</p>
       </div>
-      <div className="flex flex-col xl:items-start items-center gap-4 pr-8">
+      <div className={divContainer}>
         <p className={styleTitle}>ISP</p>
         <p className={styleName}>{data?.isp}</p>
       </div>
